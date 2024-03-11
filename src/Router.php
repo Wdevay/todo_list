@@ -1,7 +1,8 @@
 <?php 
 namespace App\Todolist;
 
-use App\Todolist\HomeController;
+use App\Todolist\Controller\HomeController;
+use App\Todolist\Controller\TaskController;
 
 class Router 
 {
@@ -26,7 +27,7 @@ class Router
             $controller->index();
         }
         $parts = explode('/', $url);
-        if (array_key_exists(4, $parts) && $parts[4] !== "" && $parts[4] !== "new" && $parts[3] === "task") {
+        if (array_key_exists(4, $parts) && $parts[4] !== "" && $parts[4] !== "new" && $parts[4] !== "update" && $parts[3] === "task") {
             // Instancier le contrôleur et appeler la méthode
             $controller = new TaskController();
             $controller->show((int)$parts[4]);
