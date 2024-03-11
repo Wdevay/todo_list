@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Todolist;
 
 use App\Todolist\Service\Database;
@@ -36,13 +37,14 @@ class TaskController
         ]);
     }
 
-    public function new(){
+    public function new()
+    {
         // determiner le dossier qui va contenir les fichiers twig
         $loader = new FilesystemLoader("../templates");
         // inintialiser twig
         $twig = new Environment($loader);
 
-        if ($_SERVER['REQUEST_METHOD'] === "POST"){
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
             // se connecter à la base de donnée
             $pdo = new Database(
                 "127.0.0.1",
@@ -88,9 +90,64 @@ class TaskController
         // echo "<pre>" ; 
         // var_dump($task);
         // echo "</pre>";
-        
+
         echo $twig->render('taskDetailPage.twig', [
             'task' => $task
         ]);
+    }
+
+    public function delete(int $id)
+    {
+
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist",
+            "3306",
+            "root",
+            ""
+        );
+        // récupérer les datas
+        $pdo->query(
+            "DELETE FROM task WHERE id=" . $id
+        );
+
+        // rediriger vers la liste des tâches
+        header("Location: http://localhost/todo_list/public/task/");
+    }
+
+    public function update(int $id)
+    {
+        // determiner le dossier qui va contenir les fichiers twig
+        $loader = new FilesystemLoader("../templates");
+        // inintialiser twig
+        $twig = new Environment($loader);
+
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist",
+            "3306",
+            "root",
+            ""
+        );
+        // récupérer les datas
+        $task = $pdo->select(
+            "SELECT * FROM task WHERE id = " . $id
+        );
+
+
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            // se connecter à la base de donnée
+
+            // récupérer les datas
+            $pdo->query(
+                "UPDATE task SET title = '?',status = '?' WHERE task.id = ?",
+                [$_POST['title'], $_POST['status']],$id
+            );
+
+            // rediriger vers la liste des tâches
+            header("Location: http://localhost/todo_list/public/task/");
+        }
+
+        echo $twig->render('taskUpdatePage.twig', ['task' => $task]);
     }
 }

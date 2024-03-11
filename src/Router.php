@@ -31,6 +31,18 @@ class Router
             $controller = new TaskController();
             $controller->show((int)$parts[4]);
         }
+
+        if (array_key_exists(4, $parts) && $parts[4] === "delete" && $parts[5] !== "" && $parts[3] === "task") {
+            // Instancier le contrôleur et appeler la méthode
+            $controller = new TaskController();
+            $controller->delete((int)$parts[5]);
+        }
+
+        if (array_key_exists(4, $parts) && $parts[4] === "update" && $parts[5] !== "" && $parts[3] === "task") {
+            // Instancier le contrôleur et appeler la méthode
+            $controller = new TaskController();
+            $controller->update((int)$parts[5]);
+        }
         // Gérer les erreurs (par exemple, afficher une page 404)
     }
 }
