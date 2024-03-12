@@ -2,8 +2,9 @@
 namespace App\Todolist\Controller;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use App\Todolist\Controller\AbstractController;
 
-class HomeController{
+class HomeController extends AbstractController{
     public function index()
     {
         // echo "page d'accueil";
